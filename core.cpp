@@ -22,9 +22,12 @@ int main() {
   while (!game.is_over()) {
   	text_gen.player();
   	game.player_strike();
+    if (game.is_over()) {break;}
+    game.computer_thinks();
   	text_gen.computer();
   	game.computer_strike();
   }
+  game.conclude();
 
   return 0;
 }

@@ -41,6 +41,14 @@ class Board {
   	  }
   	}
 
+  	int health() {
+  	  int total_health=0;
+  	  for (auto const& ship_health:ship_map) {
+  	  	total_health = total_health + ship_health.second;
+  	  }
+  	  return total_health;
+  	}
+
   	string get_cols() {
   	  return column_names;
   	}

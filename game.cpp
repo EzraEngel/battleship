@@ -3,6 +3,7 @@
 #include <string.h>
 #include <map>
 #include <random>
+#include <unistd.h>
 #include "ascii_art.cpp"
 #include "board.cpp"
 #include "player.cpp"
@@ -15,10 +16,10 @@ class Game {
   	bool game_is_over = false;
   
   public:
+    Player player;
+    Player computer;
   	Board player_board;
   	Board computer_board;
-  	Player player;
-  	Player computer;
 
   	Game(ASCII text_var, Board board_p, Board board_c, Player player_p, Player player_c) {
   	  player_board=board_p;
@@ -95,6 +96,7 @@ class Game {
   	  }
   	  else {
   	  	computer_board.damage_ship(strike_code, text_gen);
+        check_win_state();
   	  }
   	  computer_board.display(false);
   	}
@@ -130,12 +132,41 @@ class Game {
           cout << "Computer guessed: " << computer_guess << "." << endl;
           text_gen.miss();
           good_strike = true;
+          player_board.display(true);
         }
         else {
           cout << "Computer guessed: " << computer_guess << "." << endl;
           player_board.damage_ship(strike_code, text_gen);
+          check_win_state();
           good_strike=true;
+          player_board.display(true);
         }
       }
   	}
+
+
+    void check_win_state() {
+      if (player_board.health()==0 || computer_board.health()==0) {
+        game_is_over=true;
+      }
+    }
+
+    void conclude() {
+      if (player_board.health()==0) {
+        text_gen.you_lose();
+      }
+      else if (computer_board.health()==0) {
+        text_gen.you_win();
+      }
+      else {
+        cout << "Big error. Whoops." << endl;
+      }
+    }
+
+    void computer_thinks() {
+      cout << endl << "Computer is thinking.................................." << endl;
+      sleep(3);
+    }
+
+
 };
