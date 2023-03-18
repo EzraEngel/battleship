@@ -3,6 +3,7 @@
 #include <string.h>
 #include <map>
 #include <random>
+#include <tuple>
 
 using namespace std;
 
@@ -18,9 +19,10 @@ class Board {
     Tile state[10][10];
     string column_names = "123456789X";
     string row_names = "ABCDEFGHIJ";
-    map<char,int>ship_map;
-
+    
   public:
+  	map<char,int>ship_map;
+
   	Board() {
   	  ship_map['A'] = 5;
   	  ship_map['B'] = 4;
@@ -236,6 +238,13 @@ class Board {
         default:
           cout << "Direction is invalid. Enter R or D." << endl;
       }
+    }
+
+    string guess_to_string(vector<int> guess_vec) {
+      string guess_str = "--";
+      guess_str[0] = row_names[guess_vec[0]];
+      guess_str[1] = column_names[guess_vec[1]];
+      return guess_str;
     }
 
 };

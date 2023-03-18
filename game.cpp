@@ -1,9 +1,10 @@
 #include <iostream>
-#include <string>
+#include <cstring>
 #include <string.h>
 #include <map>
 #include <random>
 #include <unistd.h>
+#include <cctype>
 #include "ascii_art.cpp"
 #include "board.cpp"
 #include "player.cpp"
@@ -20,6 +21,7 @@ class Game {
     Player computer;
   	Board player_board;
   	Board computer_board;
+    ComputerAI comp_ai;
 
   	Game(ASCII text_var, Board board_p, Board board_c, Player player_p, Player player_c) {
   	  player_board=board_p;
@@ -32,6 +34,14 @@ class Game {
   	bool is_over() {
   	  return game_is_over;
   	}
+
+    string to_upper(string lower_string) {
+      string upper_string = "";
+      for (char letter:lower_string) {
+        upper_string.push_back(toupper(letter));
+      }
+      return upper_string;
+    }
 
   	void play_intro() {
   	  text_gen.welcome_to();
@@ -56,7 +66,7 @@ class Game {
           cin >> coordinate;
           cout << "Choose a direction (R/D): ";
           cin >> direction;
-          ship_placed = player_board.emplace_ship(coordinate,direction,ship_codes[ship],true);
+          ship_placed = player_board.emplace_ship(to_upper(coordinate),toupper(direction),ship_codes[ship],true);
           player_board.display(true);
   	  	}
   	  }
@@ -102,29 +112,26 @@ class Game {
   	}
 
   	void player_strike() {
-  	  string player_guess;
-      cout << "Strike your opponent!" << endl;
-      cout << "Coordinate: ";
-  	  cin >> player_guess;
-   	  char strike_code = computer_board.strike(player_guess);
-   	  strike_feedback(strike_code);
+      char strike_code = 'X';
+      while (strike_code=='X') {
+  	    string player_guess;
+        cout << "Strike your opponent!" << endl;
+        cout << "Coordinate: ";
+    	  cin >> player_guess;
+     	  strike_code = computer_board.strike(to_upper(player_guess));
+     	  strike_feedback(strike_code);
+      }
   	}
 
   	void computer_strike() {
-  	  uniform_int_distribution<int> distribution10(0, 10);
-  	  default_random_engine generator(time(nullptr));
-  	  int row_index, col_index;
-      char row, col;
+      vector<int> guess_vec;
+      string computer_guess;
       bool good_strike = false;
       while (!good_strike) {
-      	string computer_guess = "--";
-      	row_index = distribution10(generator);
-        col_index = distribution10(generator);
-        row = computer_board.get_rows()[row_index];
-        col = computer_board.get_cols()[col_index];
-        computer_guess[0] = row;
-        computer_guess[1] = col;
+        guess_vec = comp_ai.computer_guess();
+        computer_guess = computer_board.guess_to_string(guess_vec);
       	char strike_code = player_board.strike(computer_guess);
+        // comp_ai.update_strike_code(strike_code);
         if (strike_code=='X') {
           good_strike = false;
         }
@@ -141,6 +148,7 @@ class Game {
           good_strike=true;
           player_board.display(true);
         }
+        comp_ai.update_leads(strike_code, player_board.ship_map, guess_vec);
       }
   	}
 
@@ -153,10 +161,14 @@ class Game {
 
     void conclude() {
       if (player_board.health()==0) {
+        cout << endl << endl;
         text_gen.you_lose();
+        cout << endl << endl << endl;
       }
       else if (computer_board.health()==0) {
+        cout << endl << endl;
         text_gen.you_win();
+        cout << endl << endl << endl;
       }
       else {
         cout << "Big error. Whoops." << endl;
