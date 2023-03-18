@@ -73,12 +73,16 @@ class Game {
           player_board.leading_whitespace();
   	  	  cout << "Place your " << ship << "!" << endl;
           player_board.leading_whitespace();
-          cout << "Choose a coordinate: ";
+          cout << "Choose a coordinate";
+          if (ship=="Carrier") {cout << " (eg. A1)";}
+          cout << ": ";
           cin >> coordinate;
           player_board.leading_whitespace();
-          cout << "Choose a direction (R/D): ";
+          cout << "Choose a direction";
+          if (ship=="Carrier") {cout << " (R/D)";}
+          cout << ": ";
           cin >> direction;
-          ship_placed = player_board.emplace_ship(to_upper(coordinate),toupper(direction),ship_codes[ship],true);
+          ship_placed = player_board.emplace_ship(to_upper(coordinate),toupper(direction),ship_codes[ship],false);
           player_board.display(true);
   	  	}
   	  }

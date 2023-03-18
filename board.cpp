@@ -155,28 +155,28 @@ class Board {
     bool emplace_ship(string coordinate, char direction, char type, bool silence) {
       string output;
       if (!valid_coordinate(coordinate)) {
-      	output = (!silence) ? "Bad coordinate.\n" : "";
+      	output = (!silence) ? "                         Bad coordinate.\n" : "";
       	cout << output;
         return false;	
       }
       else if (direction!='R'&&direction!='D') {
-      	output = (!silence) ? "Bad direction.\n" : "";
+      	output = (!silence) ? "                         Bad direction.\n" : "";
       	cout << output;
       	return false;
       }
       else if (!ship_fits_on_board(coordinate,direction,type)) {
-      	output = (!silence) ? "Ship does not fit on board.\n" : "";
+      	output = (!silence) ? "                         Ship does not fit on board.\n" : "";
       	cout << output;
       	return false;
       }
       else if (ship_overlaps(coordinate,direction,type)) {
-      	output = (!silence) ? "Ship overlaps another ship.\n" : "";
+      	output = (!silence) ? "                         Ship overlaps another ship.\n" : "";
       	cout << output;
       	return false;
       }
       else {
       	lay_ship(coordinate,direction,type);
-      	output = (!silence) ? "Good placement.\n" : "";
+      	output = (!silence) ? "                         Good placement.\n" : "";
       	cout << output;
       	return true;
       }
