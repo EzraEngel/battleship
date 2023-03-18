@@ -44,11 +44,16 @@ class Game {
     }
 
   	void play_intro() {
+      text_gen.new_screen();
       text_gen.h_bar();
   	  text_gen.welcome_to();
   	  text_gen.battleship();
       text_gen.h_bar();
+      sleep(2);
       text_gen.instructions();
+      sleep(2);
+      text_gen.your_fleet();
+      sleep(2);
   	  player_board.display(false);
   	}
 

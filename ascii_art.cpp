@@ -1,9 +1,17 @@
 #include <iostream>
+#include <string>
+#include <unistd.h>
 
 using namespace std;
 
 class ASCII {
   public:
+
+  	void new_screen() {
+  	  for (int i=0; i<100; i++) {
+  	  	cout << endl;
+  	  }
+  	}
 
   	void welcome_to() {
       cout << " ____      ____  ________  _____       ______    ___   ____    ____  ________       _________    ___    " << endl;
@@ -24,6 +32,9 @@ class ASCII {
   	  cout << " After you place your ships, you will take turns firing salvos with the enemy. Sink his ships before" << endl;
   	  cout << " he sinks yours, and  YOU WIN.  Fail to do so,  and prepare for a  long float home  in a  life boat." << endl;
   	  cout << endl;
+  	}
+
+  	void your_fleet() {
   	  cout << "                           *****************************************                                " << endl;
   	  cout << "                                          YOUR FLEET                                                " << endl;
   	  cout << "                           *****************************************                                " << endl;
