@@ -44,8 +44,11 @@ class Game {
     }
 
   	void play_intro() {
+      text_gen.h_bar();
   	  text_gen.welcome_to();
   	  text_gen.battleship();
+      text_gen.h_bar();
+      text_gen.instructions();
   	  player_board.display(false);
   	}
 
@@ -61,9 +64,13 @@ class Game {
   	  	while (!ship_placed) {
   	  	  string coordinate;
           char direction;
+          cout << endl;
+          player_board.leading_whitespace();
   	  	  cout << "Place your " << ship << "!" << endl;
+          player_board.leading_whitespace();
           cout << "Choose a coordinate: ";
           cin >> coordinate;
+          player_board.leading_whitespace();
           cout << "Choose a direction (R/D): ";
           cin >> direction;
           ship_placed = player_board.emplace_ship(to_upper(coordinate),toupper(direction),ship_codes[ship],true);
@@ -115,7 +122,9 @@ class Game {
       char strike_code = 'X';
       while (strike_code=='X') {
   	    string player_guess;
+        player_board.leading_whitespace();
         cout << "Strike your opponent!" << endl;
+        player_board.leading_whitespace();
         cout << "Coordinate: ";
     	  cin >> player_guess;
      	  strike_code = computer_board.strike(to_upper(player_guess));
@@ -136,12 +145,14 @@ class Game {
           good_strike = false;
         }
         else if (strike_code==' ') {
+          player_board.leading_whitespace();
           cout << "Computer guessed: " << computer_guess << "." << endl;
           text_gen.miss();
           good_strike = true;
           player_board.display(true);
         }
         else {
+          player_board.leading_whitespace();
           cout << "Computer guessed: " << computer_guess << "." << endl;
           player_board.damage_ship(strike_code, text_gen);
           check_win_state();
@@ -161,14 +172,16 @@ class Game {
 
     void conclude() {
       if (player_board.health()==0) {
-        cout << endl << endl;
+        text_gen.h_bar();
         text_gen.you_lose();
-        cout << endl << endl << endl;
+        text_gen.h_bar();
+        cout << endl << endl;
       }
       else if (computer_board.health()==0) {
-        cout << endl << endl;
+        text_gen.h_bar();
         text_gen.you_win();
-        cout << endl << endl << endl;
+        text_gen.h_bar();
+        cout << endl << endl;
       }
       else {
         cout << "Big error. Whoops." << endl;

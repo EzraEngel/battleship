@@ -70,6 +70,7 @@ class Board {
     }
 
     void print_header() {
+      leading_whitespace();
       cout << "  |";
       for (int i=0; i<10; i++) {
       	cout << " " << column_names[i] << " |";
@@ -78,6 +79,7 @@ class Board {
     }
 
     void print_hline() {
+      leading_whitespace();
       cout << "--+";
       for (int i=0; i<10; i++) {
       	cout << "---+";
@@ -85,7 +87,12 @@ class Board {
       cout << endl;
     }
 
+    void leading_whitespace() {
+      cout << "                         ";
+    }
+
     void print_row(int row_index, bool vis) {
+      leading_whitespace();
       cout << row_names[row_index] << " |";
       for (int i=0; i<10; i++) {
       	if (!state[i][row_index].hit) {
