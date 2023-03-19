@@ -15,15 +15,19 @@ class Lead {
     char direction='U';
     char type;
     int length;
+    map<char,int>* ship_map_ptr;
 
-    Lead(int first_row_tmp, int first_col_tmp, char type_tmp, int length_tmp) {
+
+    Lead(int first_row_tmp, int first_col_tmp, char type_tmp, int length_tmp, map<char,int>* ship_map_tmp) {
       first_row = first_row_tmp;
       first_col = first_col_tmp;
       type = type_tmp;
       length = length_tmp;
+      ship_map_ptr = ship_map_tmp;
     }
 
-    int health(map<char,int> ship_map) {
+    int health() {
+      map<char,int> ship_map= *ship_map_ptr;
       return ship_map[type];
     }
 
@@ -47,6 +51,11 @@ class ComputerAI {
     int last_col;
     char last_guess;
     char bracket_dir='N';
+    map<char,int>* ship_map_ptr;
+
+    void set_map(map<char,int>* ship_map_adr) {
+      ship_map_ptr = ship_map_adr;
+    }
 
     void update_strike_code(char strike_code) {
       last_guess = strike_code;
@@ -54,7 +63,7 @@ class ComputerAI {
 
     void new_lead(char strike_code, map<char,int>ship_map, vector<int> comp_guess) {
       if (strike_code != 'X' && strike_code != ' ') {
-        Lead new_lead(comp_guess[0],comp_guess[1],strike_code,ship_map[strike_code]);
+        Lead new_lead(comp_guess[0],comp_guess[1],strike_code,ship_map[strike_code],ship_map_ptr);
         leads.push_back(new_lead);
       }
     }
@@ -84,7 +93,7 @@ class ComputerAI {
           return lead;
         }
       }
-      Lead normal(0,0,'U',0);
+      Lead normal(0,0,'U',0,nullptr);
       return normal;
     }
 
@@ -101,7 +110,7 @@ class ComputerAI {
         }
       }
       if (!leads.empty() && strike_code!='X') {
-        if (leads[0].health(ship_map)==0) {
+        if (leads[0].health()==0) {
           leads.erase(leads.begin());
           center_target();
           return 0;

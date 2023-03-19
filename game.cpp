@@ -29,7 +29,11 @@ class Game {
   	  player = player_p;
   	  computer = player_c;
   	  text_gen = text_var;
+      comp_ai.set_map(&player_board.ship_map);
   	}
+
+    
+
 
   	bool is_over() {
   	  return game_is_over;
