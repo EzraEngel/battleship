@@ -53,12 +53,14 @@ class ComputerAI {
     char bracket_dir='N';
     map<char,int>* ship_map_ptr;
 
+    // ####################################################################################################################################################################
+    // Class Member Initializers ##########################################################################################################################################
+    // I've avoided using a classical constructor here due to the requirement of a guess before setting
+    // most of the variables. Default values wouldn't have any logical meaning outside the existence of
+    // an actual guess.
+
     void set_map(map<char,int>* ship_map_adr) {
       ship_map_ptr = ship_map_adr;
-    }
-
-    void update_strike_code(char strike_code) {
-      last_guess = strike_code;
     }
 
     void new_lead(char strike_code, map<char,int>ship_map, vector<int> comp_guess) {
@@ -68,38 +70,28 @@ class ComputerAI {
       }
     }
 
-    void set_direction() {
-      if (bracket_dir=='N' || bracket_dir=='S') {
-        leads[0].direction = 'H';
+    // ######################################################################################################################################################################
+    // Primary Computer Logic Flow ##########################################################################################################################################
+    // computer_guess defines logic flow for different types of guesses while update_leads defines how
+    // the lead vector is updated based on what information is already known about the ship and what new
+    // information the computer has learned.
+
+    vector<int> computer_guess() {
+      if (leads.empty()) {
+        return random_guess();
+      }
+      else if (leads[0].bracketing()) {
+        return bracket();
+      }
+      else if (leads[0].strafing()) {
+        return strafe();
+      }
+      else if (leads[0].back_tracking()) {
+        return back_track();
       }
       else {
-        leads[0].direction = 'V';
+        return random_guess();
       }
-    }
-
-    bool lead_exists(char strike_code) {
-      bool lead_exists = false;
-      for (Lead lead:leads) {
-        if (lead.type==strike_code) {
-          lead_exists=true;
-        }
-      }
-      return lead_exists;
-    }
-
-    Lead get_lead(char strike_code) {
-      for (Lead lead:leads) {
-        if (lead.type==strike_code) {
-          return lead;
-        }
-      }
-      Lead normal(0,0,'U',0,nullptr);
-      return normal;
-    }
-
-    void center_target() {
-      last_row=leads[0].first_row;
-      last_col=leads[0].first_col;
     }
 
     int update_leads(char strike_code, map<char,int>ship_map, vector<int> comp_guess) {
@@ -137,23 +129,11 @@ class ComputerAI {
       return 0;
     }
 
-    void rotate_bracket() {
-      switch (bracket_dir) {
-      case 'N':
-        bracket_dir = 'E';
-        break;
-      case 'E':
-        bracket_dir = 'S';
-        break;
-      case 'S':
-        bracket_dir = 'W';
-        break;
-      case 'W':
-        bracket_dir = 'N';
-        break;
-      }
-    }
-    
+    // ####################################################################################################################################################################
+    // Guess Type definitions #############################################################################################################################################
+    // Describes computer guess logic for different guessing strategies dictated by main guess logic loop
+    // computer_guess and update_lead functions.
+
     vector<int> random_guess() {
       uniform_int_distribution<int> distribution10(0, 10);
       default_random_engine generator(time(nullptr));
@@ -212,23 +192,72 @@ class ComputerAI {
       return computer_guess;
     }
 
-    vector<int> computer_guess() {
-      if (leads.empty()) {
-        return random_guess();
+    // ####################################################################################################################################################################
+    //Lead Logic Helper Functions #########################################################################################################################################
+
+    bool lead_exists(char strike_code) {
+      bool lead_exists = false;
+      for (Lead lead:leads) {
+        if (lead.type==strike_code) {
+          lead_exists=true;
+        }
       }
-      else if (leads[0].bracketing()) {
-        return bracket();
+      return lead_exists;
+    }
+
+    Lead get_lead(char strike_code) {
+      for (Lead lead:leads) {
+        if (lead.type==strike_code) {
+          return lead;
+        }
       }
-      else if (leads[0].strafing()) {
-        return strafe();
-      }
-      else if (leads[0].back_tracking()) {
-        return back_track();
+      Lead normal(0,0,'U',0,nullptr);
+      return normal;
+    }
+
+    // ####################################################################################################################################################################
+    // Pull strike feedback into the class ################################################################################################################################
+
+    void update_strike_code(char strike_code) {
+      last_guess = strike_code;
+    }
+
+
+    // ####################################################################################################################################################################
+    // Class Member update functions ######################################################################################################################################
+
+    void set_direction() {
+      if (bracket_dir=='N' || bracket_dir=='S') {
+        leads[0].direction = 'H';
       }
       else {
-        return random_guess();
+        leads[0].direction = 'V';
       }
     }
+
+    void rotate_bracket() {
+      switch (bracket_dir) {
+      case 'N':
+        bracket_dir = 'E';
+        break;
+      case 'E':
+        bracket_dir = 'S';
+        break;
+      case 'S':
+        bracket_dir = 'W';
+        break;
+      case 'W':
+        bracket_dir = 'N';
+        break;
+      }
+    }
+
+    void center_target() {
+      last_row=leads[0].first_row;
+      last_col=leads[0].first_col;
+    }
+
+    
 };
 
 class Player {
