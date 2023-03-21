@@ -188,10 +188,10 @@ class Board {
       int row_index = get_index(coordinate[0], row_names);
       switch (direction) {
         case 'R':
-          return col_index+ship_map[type]<10;
+          return col_index+ship_map[type]<11;
           break;
         case 'D':
-          return row_index+ship_map[type]<10;
+          return row_index+ship_map[type]<11;
           break;
         default:
           cout << "Direction is invalid. Enter R or D." << endl;
