@@ -16,3 +16,6 @@ I completed this over the course of a few days (~10 hours total), focusing on **
 ```bash
 g++ -std=c++17 *.cpp -o battleship
 ./battleship
+
+## Computer AI
+The computer opponent in this Battleship implementation uses a simple but effective rule-based AI. When a hit is scored, the AI enters a bracketing phase, probing in cardinal directions to determine the ship's orientation. Once the direction is inferred, it transitions to a strafe phase, firing sequentially along the expected axis of the ship. If it reaches the end without sinking the target, it backtracks to strike from the opposite side. This layered logic allows the AI to adapt to in-game information and simulate strategic behavior without relying on randomness alone.
