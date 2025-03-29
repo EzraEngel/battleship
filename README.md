@@ -1,13 +1,18 @@
-Welcome to Battleship, where you sink your opponent before he sinks you. In this game, you'll play against the computer who will utilize only basic tactics to try to sink you.
+# Battleship (C++ Console Game)
 
-To play:
+This is a console-based implementation of the classic game **Battleship**, written in C++ as a warm-up project to reacquaint myself with the language after several years away.
 
-If you run MacOS on a 64 bit architecture (any Mac after 2006 that's not sporting an M1 chip) the executable should work as advertised. For M1/M2/32bit architectures you'll need to recompile the programs with your own compilter (must be C++ 11 or higher). For windows systems you'll need to recompile, and you ALSO may need to change the sleep function to whatever it is for your operating system.
+I completed this over the course of a few days (~10 hours total), focusing on **object-oriented design**, **state management**, and clear separation of responsibilities across game components. While it's not intended to be production-grade code, it reflects how I approach systems design even in small-scope personal projects.
 
-To run the executable:
+## Areas of focus
 
-1) Open your terminal.
+- **Object-oriented programming**: The game logic is encapsulated across cleanly defined classes (`Board`, `Player`, etc.), each with a clear role.
+- **Stateful turn-based gameplay**: The game handles player turns, ship placement, hit/miss tracking, and victory conditions.
+- **Encapsulation and abstraction**: Internal data is protected via private class members, and exposed via well-defined public interfaces.
+- **Basic terminal UX**: The user interacts with the game entirely through the console, with visual board feedback and prompts.
 
-2) Navigate to the directory where you compiled the program or downloaded the executable (battleship). Use the cd command to navigate--reference bash documentation if needed.
+## 🔧 How to Run
 
-3) Run it by typing ./battleship.
+```bash
+g++ -std=c++17 *.cpp -o battleship
+./battleship
