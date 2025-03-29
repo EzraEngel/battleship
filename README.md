@@ -11,7 +11,7 @@ I completed this over the course of a few days (~10 hours total), focusing on **
 - **Encapsulation and abstraction**: Internal data is protected via private class members, and exposed via well-defined public interfaces.
 - **Basic terminal UX**: The user interacts with the game entirely through the console, with visual board feedback and prompts.
 
-## 🔧 How to Run
+## How to Run
 
 ```bash
 g++ -std=c++17 *.cpp -o battleship
