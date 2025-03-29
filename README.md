@@ -10,6 +10,7 @@ I completed this over the course of a few days (~10 hours total), focusing on **
 - **Stateful turn-based gameplay**: The game handles player turns, ship placement, hit/miss tracking, and victory conditions.
 - **Encapsulation and abstraction**: Internal data is protected via private class members, and exposed via well-defined public interfaces.
 - **Basic terminal UX**: The user interacts with the game entirely through the console, with visual board feedback and prompts.
+- **AI System**: The computer uses a rules-based AI system to seek out your ships, bracket them, then sink them.
 
 ## How to Run
 
