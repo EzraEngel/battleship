@@ -3,7 +3,7 @@
 #include <string.h>
 #include <map>
 #include <random>
-#include "game.cpp"
+#include "game.h"
 
 
 using namespace std;
